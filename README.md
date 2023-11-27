@@ -15,10 +15,10 @@ The `fastq_subsetter` tool is designed to perform subsampling on FASTQ files, al
 ## Features
 - Efficient subsampling of FASTQ (and gzipped-FASTQ) files.
 - Parallel processing using multiple threads for improved performance.
-- Customizable subsampling levels and file naming conventions.
+- Customizable subsampling levels.
 - Regular expression-based file name filtering.
-- Option to skip existing output files to avoid redundant processing.
-- Ability to set random seeds for reproducible downsampling.
+- Option to skip existing output files to avoid redundant processing. (`force = false`)
+- (Future) Ability to set random seeds for reproducible downsampling.
 
 ## Usage
 To use the `fastq_subsetter` tool, follow these steps:
@@ -32,12 +32,16 @@ The available command-line options are as follows:
 - `--in/-i <input_dir>`: Specify the input directory containing the FASTQ files.
 - `--out/-o <output_dir>`: Specify the output directory for storing the subsampled files.
 - `[--regex/r <pattern>]`: Specify the regular expression pattern for matching input file names (optional, defaults to `.*_R[12]_001\.fastq(\.gz)?`).
-- `[--start <start>]`: Specify the starting number of reads for subsampling (optional, defaults to `0`).
-- `[--stop <stop>]`: Specify the stopping number of reads for subsampling (optional, defaults to `0`).
-- `[--step <step>]`: Specify the step size for subsampling (optional, defaults to `0`).
+- `[--start <start>]`: Specify the starting number of reads for subsampling _per fastq file_ (optional, defaults to `0`).
+- `[--stop <stop>]`: Specify the stopping number of reads for subsampling _per fastq file_ (optional, defaults to `0`).
+- `[--step <step>]`: Specify the step size for subsampling _per fastq file_ (optional, defaults to `0`).
 - `[--force]`: Force subsampling even if the output file already exists (optional, defaults to `false`).
 
-Note that incorrect or missing selection of start stop and step will cause the program to use the default downsampling levels:
+Note that incorrect or missing selection of `start`, `stop`, or `step` will cause the program to use default subsampling levels:
+```c++
+reads = {100, 200, 300, 400, 500, 1000, 1500, 2000, 3000, 4000, 5000, 10000, 15000, 20000, 25000, 30000, 35000, 40000, 45000, 50000,
+                 55000, 60000, 65000, 70000, 75000, 80000, 85000, 90000, 95000, 10000, 110000, 120000, 130000, 140000, 150000, 160000, 170000, 180000, 190000, 200000};
+```
 
 ## Future updates
 In the future, I will incorporate support for the user to specify the random seed (presently, it is static at `42`, so you will get the same results each time), and will permit the specification of non-uniformly distributed subsampling levels from either the command-line or a text file.
