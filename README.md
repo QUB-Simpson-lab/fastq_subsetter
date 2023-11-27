@@ -29,15 +29,16 @@ To use the `fastq_subsetter` tool, follow these steps:
 
 The available command-line options are as follows:
 
-- `--in <input_dir>`: Specify the input directory containing the FASTQ files.
-- `--out <output_dir>`: Specify the output directory for storing the subsampled files.
-- `--regex <pattern>`: Specify the regular expression pattern for matching input file names (optional, defaults to `.*_R[12]_001\.fastq(\.gz)?`).
-- `--start <start>`: Specify the starting number of reads for subsampling (optional).
-- `--stop <stop>`: Specify the stopping number of reads for subsampling (optional).
-- `--step <step>`: Specify the step size for subsampling (optional).
-- `--force`: Force subsampling even if the output file already exists (optional).
+- `--in/-i <input_dir>`: Specify the input directory containing the FASTQ files.
+- `--out/-o <output_dir>`: Specify the output directory for storing the subsampled files.
+- `[--regex/r <pattern>]`: Specify the regular expression pattern for matching input file names (optional, defaults to `.*_R[12]_001\.fastq(\.gz)?`).
+- `[--start <start>]`: Specify the starting number of reads for subsampling (optional, defaults to `0`).
+- `[--stop <stop>]`: Specify the stopping number of reads for subsampling (optional, defaults to `0`).
+- `[--step <step>]`: Specify the step size for subsampling (optional, defaults to `0`).
+- `[--force]`: Force subsampling even if the output file already exists (optional, defaults to `false`).
 
-For detailed usage instructions, refer to the [Usage](#usage) section in this README.
+Note that the `--regex`
+
 
 ## Installation
 Before compiling, ensure you have the necessary dependencies installed:
@@ -56,9 +57,10 @@ To build the `fastq_subsetter` executable, you need a C++ compiler and the neces
 git clone https://github.com/QUB-Simpson-lab/fastq_subsetter.git
 # Navigate to the repository directory:
 cd fastq_subsetter
-# compile the code:
+# Compile the code:
 g++ -o fastq_subsetter fastq_subsetter.cpp -lz -pthread -O2
-The `fastq_subsetter` executable will be generated in the same directory.
+# The `fastq_subsetter` executable will be generated in the same directory, and can be installed:
+sudo cp fastq_subsetter /usr/local/bin/.
 ```
 
 ## Example
@@ -69,4 +71,4 @@ Suppose you have a directory named `input_fastq` containing your FASTQ files, an
 ./fastq_subsetter --in input_fastq --out output_fastq --start 100 --stop 1000 --step 100
 ```
 
-This command will subsample the input FASTQ files, generating multiple subsampled versions with read counts ranging from `100`_start_ to 1000 _stop_ (inclusive), incrementing by 100 _step_ in between. The resulting files will be stored in the `output_fastq` directory
+This command will subsample the input FASTQ files, generating multiple subsampled versions with read counts ranging from `100`_start_ to `1000` _stop_ (inclusive), incrementing by `100` _step_ in between. The resulting files will be stored in the `output_fastq` directory

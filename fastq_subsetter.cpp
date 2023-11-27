@@ -124,11 +124,11 @@ int main(int argc, char* argv[]) {
     static struct option long_options[] = {
         {"in", required_argument, 0, 'i'},
         {"out", required_argument, 0, 'o'},
-        {"regex", optional_argument, 0, 'p'},
-        {"start", optional_argument, 0, 's'},
-        {"stop", optional_argument, 0, 't'},
-        {"step", optional_argument, 0, 'x'},
-        {"force", optional_argument, 0, 'f'},
+        {"regex", required_argument, 0, 'p'},
+        {"start", required_argument, 0, 's'},
+        {"stop", required_argument, 0, 't'},
+        {"step", required_argument, 0, 'x'},
+        {"force", no_argument, 0, 'f'},
         {0, 0, 0, 0}
     };
 
