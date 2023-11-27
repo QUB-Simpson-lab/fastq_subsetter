@@ -37,7 +37,10 @@ The available command-line options are as follows:
 - `[--step <step>]`: Specify the step size for subsampling (optional, defaults to `0`).
 - `[--force]`: Force subsampling even if the output file already exists (optional, defaults to `false`).
 
-Note that the `--regex`
+Note that incorrect or missing selection of start stop and step will cause the program to use the default downsampling levels:
+
+## Future updates
+In the future, I will incorporate support for the user to specify the random seed (presently, it is static at `42`, so you will get the same results each time), and will permit the specification of non-uniformly distributed subsampling levels from either the command-line or a text file.
 
 
 ## Installation
