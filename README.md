@@ -14,11 +14,12 @@ The `fastq_subsetter` tool is designed to perform subsampling on FASTQ files, al
 
 ## Features
 - Efficient subsampling of FASTQ (and gzipped-FASTQ) files.
-- Parallel processing using multiple threads for improved performance.
-- Customizable subsampling levels.
+- Asynchronous parallel processing using multiple threads for improved performance.
+- Customizable subsampling levels or ratio.
 - Regular expression-based file name filtering.
 - Option to skip existing output files to avoid redundant processing. (`force = false`)
-- (Future) Ability to set random seeds for reproducible downsampling.
+- Ability to set random seeds for reproducible downsampling.
+- (Future) Caching: A planned feature to store read counts for improved performance
 
 ## Usage
 To use the `fastq_subsetter` tool, follow these steps:
@@ -35,7 +36,9 @@ The available command-line options are as follows:
 - `[--start <start>]`: Specify the starting number of reads for subsampling _per fastq file_ (optional, defaults to `0`).
 - `[--stop <stop>]`: Specify the stopping number of reads for subsampling _per fastq file_ (optional, defaults to `0`).
 - `[--step <step>]`: Specify the step size for subsampling _per fastq file_ (optional, defaults to `0`).
-- `[--force]`: Force subsampling even if the output file already exists (optional, defaults to `false`).
+- `[--seed <seed>]`: Specify a random seed for reproducibility (optional, defaults to 0).
+- `[--ratio <ratio>]`: Specify the ratio of reads to subsample (optional).
+- `[--force]`: Force subsampling even if the output file already exists (optional, defaults to false).
 
 Note that incorrect or missing selection of `start`, `stop`, or `step` will cause the program to use default subsampling levels:
 ```c++
@@ -44,7 +47,9 @@ reads = {100, 200, 300, 400, 500, 1000, 1500, 2000, 3000, 4000, 5000, 10000, 150
 ```
 
 ## Future updates
-In the future, I will incorporate support for the user to specify the random seed (presently, it is static at `42`, so you will get the same results each time), and will permit the specification of non-uniformly distributed subsampling levels from either the command-line or a text file.
+- Caching: Implement caching to store original read counts, which will improve efficiency by speeding up repeated subsampling requests.
+- Non-Uniform Subsampling Levels: Enable users to specify non-uniform range-distributed subsampling levels through the command line or a text file, offering greater flexibility in subsampling strategies.
+- Input Format Support: Allow the use of non-gzipped FASTQ files as input, broadening compatibility with various data sources.
 
 
 ## Installation
@@ -79,3 +84,9 @@ Suppose you have a directory named `input_fastq` containing your FASTQ files, an
 ```
 
 This command will subsample the input FASTQ files, generating multiple subsampled versions with read counts ranging from `100`_start_ to `1000` _stop_ (inclusive), incrementing by `100` _step_ in between. The resulting files will be stored in the `output_fastq` directory
+
+## Subsampling with Ratios
+When using the `--ratio` option, the tool will instead process each file to achieve a fractional value of the original number of reads. Users can specify this as either a decimal fraction or as an integer that will be converted into a fraction. For example:
+
+Inputting 4 will yield 1/4, equivalent to 0.25.
+Inputting 16 will yield 1/16, equivalent to 0.0625.
